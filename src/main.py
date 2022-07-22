@@ -29,6 +29,7 @@ def printServer(index,ip,port):
 	#check online status
 	#thows error server is offline
 	server = socket.socket()
+	server.settimeout(1)
 	try:
 		server.connect((ip, int(port)))
 		test = server.recv(2048).decode()
