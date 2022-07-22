@@ -1,1 +1,5 @@
 .prev.txt
+.users
+.pyc
+
+src/__pycache__/flags.cpython-310.pyc

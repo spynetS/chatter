@@ -4,6 +4,25 @@ import select
 import sys
 '''Replace "thread" with "_thread" for python 3'''
 from _thread import *
+from flags import *
+from flagser import *
+
+def getUsernamefile(option):
+	try:
+		users = open("../.users",option)
+	except:
+		temp = open("","x")
+		users = open("../.users",option)
+	return users
+
+def getUsername(ip):
+	for user in getUsernamefile("r").readlines():
+		if(ip in user):
+			return user.split(":")[0]
+	return ip
+
+commands = FlagManager([SetName()])
+
 
 """The first argument AF_INET is the address domain of the
 socket. This is used when we have an Internet Domain with
@@ -40,22 +59,26 @@ server.listen(100)
 list_of_clients = []
 
 def clientthread(conn, addr):
-
+	global commands
 	# sends a message to the client whose user object is conn
 	conn.send(b"Welcome to this chatroom!")
 
 	while True:
 			try:
 				message = conn.recv(2048)
-				if (message):
+				if("-" in message.decode()):
+					commands.args = message.decode().split(" ")+[addr[0]]
+					print(commands.check())
+					
+				elif (message):
 
 					"""prints the message and address of the
 					user who just sent the message on the server
 					terminal"""
-					print ( "<" + addr[0] + "> " + message.decode())
+					print ( "<" + getUsername(addr[0]) + "> " + message.decode())
 
 					# Calls broadcast function to send message to all
-					message_to_send = "<" + addr[0] + "> " + message.decode()
+					message_to_send = "<" + getUsername(addr[0]) + "> " + message.decode()
 					broadcast(message_to_send, conn)
 
 				else:
