@@ -3,3 +3,4 @@
 .pyc
 
 src/__pycache__/flags.cpython-310.pyc
+.config

@@ -1,7 +1,12 @@
 import os
 import socket
+import sys
 
-prevPath = "../.prev.txt"
+prevPath = ".prev.txt"
+
+if( len(sys.argv)>1 and sys.argv[1]=="serve"):
+	os.system("sudo python ./src/server.py")
+	exit()
 
 def getPrev(option):
 	global prevPath

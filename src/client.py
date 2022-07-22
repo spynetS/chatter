@@ -30,10 +30,11 @@ while True:
 		if socks == server:
 			message = socks.recv(2048)
 			print (message.decode())
+			
 		else:
-			message = sys.stdin.readline()
+			message = input()
 			server.send(str.encode(message))
-			sys.stdout.write("<You>")
-			sys.stdout.write(message)
+			#sys.stdout.write("<You>")
+			#sys.stdout.write(message)
 			sys.stdout.flush()
 server.close()

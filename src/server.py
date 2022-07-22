@@ -5,7 +5,7 @@ import sys
 '''Replace "thread" with "_thread" for python 3'''
 from _thread import *
 from flags import *
-from flagser import *
+from config import Config
 
 def getUsernamefile(option):
 	try:
@@ -23,6 +23,7 @@ def getUsername(ip):
 
 commands = ["name","list"]
 
+config = Config("../.config") 
 
 """The first argument AF_INET is the address domain of the
 socket. This is used when we have an Internet Domain with
@@ -32,16 +33,9 @@ a continuous flow."""
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-# checks whether sufficient arguments have been provided
-if len(sys.argv) != 3:
-	print ("Correct usage: script, IP address, port number")
-	exit()
+IP_address = config.getValue("ip")
 
-# takes the first argument from command prompt as IP address
-IP_address = str(sys.argv[1])
-
-# takes second argument from command prompt as port number
-Port = int(sys.argv[2])
+Port = int(config.getValue("port"))
 
 """
 binds the server to an entered IP address and at the
@@ -133,7 +127,6 @@ while True:
 
 	# prints the address of the user that just connected
 	print (addr[0] + " connected")
-	print(list_of_clients)
 	# creates and individual thread for every user
 	# that connects
 	start_new_thread(clientthread,(conn,addr))	
