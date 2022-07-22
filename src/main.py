@@ -1,13 +1,22 @@
 import os
 import socket
 
-prevPath = "../prev.txt"
+prevPath = "../.prev.txt"
+
+def getPrev(option):
+	global prevPath
+	try:
+		prev = open(prevPath,option)
+	except FileNotFoundError:
+		temp = open(prevPath,"x")
+		prev = open(prevPath,option)
+	return prev
 
 def newCon():
 	global prevPath
 	ip = input("server ip:")
 	port = input("server port:")
-	prev = open(prevPath,"a")
+	prev = getPrev("a")
 	prev.write(ip+":"+port)
 	prev.close()
 	os.system("python client.py "+ip+" "+port)
@@ -34,7 +43,7 @@ def printServer(index,ip,port):
 		server.close()
 
 # print prev connectens and handle connections
-prev = open(prevPath,"r")
+prev = getPrev("r")
 i = 1
 lines = []
 for line in prev.readlines():
