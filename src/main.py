@@ -51,12 +51,12 @@ for line in prev.readlines():
 	lines.append(line)
 	i+=1
 print()
-connection = input("Select previus connection with index (0 for new connection) \n")
+connection = input("0 For new connect. Select previus connection with index\n")
 
-if(connection == "0"):
-	newCon()
-else:
+try:
 	line = lines[int(connection)-1]
 	prevCon(line.split(":")[0],line.split(":")[1])
+except:
+	newCon()
 
 
