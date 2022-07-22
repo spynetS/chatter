@@ -21,7 +21,7 @@ def getUsername(ip):
 			return user.split(":")[0]
 	return ip
 
-commands = FlagManager([SetName()])
+commands = ["name","list"]
 
 
 """The first argument AF_INET is the address domain of the
@@ -67,9 +67,18 @@ def clientthread(conn, addr):
 			try:
 				message = conn.recv(2048)
 				if("-" in message.decode()):
-					commands.args = message.decode().split(" ")+[addr[0]]
-					print(commands.check())
-					
+					comand = message.decode().split(" ")[0]
+					if("-name" in comand):
+						value  = message.decode().split(" ")[len(message.decode().split(" "))-1]
+						setUsername([value,addr[0]])
+					if("-list" in comand):
+						users = []
+						for user in list_of_clients:
+							if(user!=conn):
+								users.append(getUsername(user.getsockname()[0]))
+
+						conn.send(str.encode(str(users)))
+
 				elif (message):
 
 					"""prints the message and address of the
